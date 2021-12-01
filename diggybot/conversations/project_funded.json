@@ -1,0 +1,11 @@
+{
+	"blocks": [
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "Great news! $Project has been fully funded! Make it so."
+			}
+		}
+	]
+}

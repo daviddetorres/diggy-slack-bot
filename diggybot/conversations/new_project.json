@@ -1,0 +1,16 @@
+{
+	"blocks": [
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "A hopeful Sysdigger has contributed a brilliant idea to the project list! "
+			},
+			"accessory": {
+				"type": "image",
+				"image_url": "https://static.vecteezy.com/system/resources/previews/000/349/108/original/idea-vector-icon.jpg",
+				"alt_text": "lightbulb"
+			}
+		}
+  ]
+}

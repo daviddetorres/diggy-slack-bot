@@ -1,0 +1,11 @@
+{
+	"blocks": [
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*$Project* was just awarded *$X* shovels for a total funding round of *$total_shovels* shovels!"
+			}
+		}
+  ]
+}

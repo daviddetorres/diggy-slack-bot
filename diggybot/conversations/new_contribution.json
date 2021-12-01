@@ -1,0 +1,11 @@
+{
+	"blocks": [
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "An illustrious Sysdigger has generously offered to contribute their time and expertise to *Project: $Project*! Quick -- call the venture capitalists!"
+			}
+		}
+  ]
+}
