@@ -79,6 +79,18 @@ class Bot:
             print(f"Got an error: {e.response['error']}")
 
 
+    def sendSlackBlocks(self, channel, blocks, error_callback):
+        try:
+            response = self.client.chat_postMessage(channel=channel, blocks=blocks)
+            assert response["message"]["blocks"] == blocks
+        except SlackApiError as e:
+            # You will get a SlackApiError if "ok" is False
+            assert e.response["ok"] is False
+            assert e.response["error"]  # str like 'invalid_auth', 'channel_not_found'
+            # todo error_callback()
+            print(f"Got an error: {e.response['error']}")
+
+
     def sendProject(self, channel, project, error_callback):
         try:
             text = project.log_string()

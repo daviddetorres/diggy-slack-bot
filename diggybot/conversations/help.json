@@ -1,0 +1,16 @@
+{
+	"blocks": [
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "Hi! I'm *Diggy*, the Sysdig Questmaster.\n\n I can help you bring your brilliant ideas to life or put you in touch with an awesome project team that needs your help."
+			},
+			"accessory": {
+				"type": "image",
+				"image_url": "https://i.imgur.com/h7ViX7q.png",
+				"alt_text": "Diggy"
+			}
+		}
+	]
+}
