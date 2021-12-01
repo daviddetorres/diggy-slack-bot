@@ -1,0 +1,47 @@
+[
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "So, you are here looking for adventure... .\n\n *Here are the open Quests:*"
+    }
+  }
+  {% for project in projects %}
+  ,{
+    "type": "divider"
+  },{
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "*{{ project['name'] }}:* {{ project['subtitle'] | replace('\n', '\\n') | replace('\\\"', '') }}\n\n⛏️ Shovels earned: {{ project['amount'] }} from {{ project['mincost'] }} (Optimal: {{ project['maxcost'] }}).\n🙋🙋🏽{{ project['num_investors'] }} people donated to this project!!!\nID: {{ project['id'] }}"
+    },
+    "accessory": {
+      "type": "image",
+      "image_url": "https://{{ host }}:8443/img/700x700/{{  project['image'] }}",
+      "alt_text": "alt text for image"
+    } 
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "Visit the project page!"
+    },
+    "accessory": {
+      "type": "button",
+      "text": {
+        "type": "plain_text",
+        "text": "🌐",
+        "emoji": true
+      },
+      "value": "click_me_123",
+      "url": "https://{{ host }}:8443/project/{{ project['id'] }}",
+      "action_id": "button-action"
+    }
+  }
+  {% endfor %}
+  ,
+  {
+    "type": "divider"
+  }
+]
