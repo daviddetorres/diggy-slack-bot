@@ -22,16 +22,12 @@ def help(bot, ctxt, client, req, args):
 
 
 def list_projects(bot, ctxt, client, req, args):
-    projects = []
-    for row in result:
-        projects.append(row[0])
-    Project.list_by_id(m.db(), projects, list_projects_response(bot, ctxt, req, res, args))
+    project_ids = []
 
+    result_project_ids = Project.list_ids()
+    for row in result_project_ids:
+        project_ids.append(row[0])
 
-def list_projects_response(bot, ctxt, client, req, args):
-    def list_projects_responseF(result):
-        projects = []
-        for row in result:
-            project = Project(row)
-            bot.sendProject('#general', project, None)
-    return list_projects_responseF
+    projects = Project.list_by_id(m.db(), projects)
+
+    bot.sendProjectList('#general', projects)

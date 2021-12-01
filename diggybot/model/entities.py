@@ -25,18 +25,25 @@ class Project:
         return "#{} {} {}".format(self.id, self.name, self.status)
 
     @staticmethod
-    def list_ids(db, callback):
+    def list_ids(db):
         with db.connect() as con:
             statement = """SELECT id, status FROM project"""
-            result = con.execute(statement)
-        callback(result)
+            return con.execute(statement)
 
 
     @staticmethod
-    def list_by_id(db, ids, callback):
+    def list_by_id(db, ids):
+        projects = []
+
         params = { 'ids': ids }
         statement = text("""SELECT * FROM project where id IN :ids""")
         statement = statement.bindparams(bindparam('ids', expanding=True))
+
         with db.connect() as con:
             result = con.execute(statement, params)
-        callback(result)
+
+            for row in result_projects:
+                projects.append( Project(row) )
+
+        return projects
+

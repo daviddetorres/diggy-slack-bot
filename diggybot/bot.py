@@ -63,8 +63,9 @@ class Bot:
 
     def process_slash_commands(self, client: SocketModeClient, req: SocketModeRequest):
         command = req.payload["command"]
+        ctxt = {}
         if command in self.commands:
-            self.commands[command](self, None, client, req, None)
+            self.commands[command](self, ctxt, client, req, None)
 
 
     def sendSlackMessage(self, channel, text, error_callback):
@@ -103,6 +104,10 @@ class Bot:
             # todo error_callback()
             print(f"Got an error: {e.response['error']}")
 
+
+    def sendProjectList(self, projects):
+        for project in projects:
+            bot.sendProject('#general', project, None)
 
 
 # Start tracker
