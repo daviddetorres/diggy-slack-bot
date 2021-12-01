@@ -46,18 +46,22 @@ class Cache:
 
 
     def on_project_funded(self, callback):
+        self.m.log.info("Registering notification: {} -> {}".format("on_project_funded", callback.__name__))
         self.project_funded_callbacks.append(callback)
 
 
     def on_new_project(self, callback):
+        self.m.log.info("Registering notification: {} -> {}".format("on_new_project", callback.__name__))
         self.new_project_callbacks.append(callback)
 
 
     def on_new_invest(self, callback):
+        self.m.log.info("Registering notification: {} -> {}".format("on_new_invest", callback.__name__))
         self.new_invest_callbacks.append(callback)
 
 
     def on_new_collaborator(self, callback):
+        self.m.log.info("Registering notification: {} -> {}".format("on_new_collaborator", callback.__name__))
         self.new_collaborator_callbacks.append(callback)
 
 

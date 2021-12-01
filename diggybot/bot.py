@@ -44,6 +44,18 @@ class Bot:
             handle = "/{}".format(command.__name__)
             self.commands[handle] = command
 
+        NOTIFICATION_REGISTRIES = {
+            "new_project": self.m.cache.on_new_project,
+            "new_investment": self.m.cache.on_new_invest,
+            "new_collaborator": self.m.cache.on_project_funded,
+            "project_funded": self.m.cache.on_new_collaborator
+        }
+        notifications = conversation._notifications()
+        for notification_type in notifications:
+            callbacks = notifications[notification_type]
+            for callback in callbacks:
+                NOTIFICATION_REGISTRIES[notification_type](callback)
+
 
     def process(self):
         def processF(client: SocketModeClient, req: SocketModeRequest):

@@ -10,7 +10,8 @@ from diggybot.model.entities import Project
 VERSION = '0.0.1'
 
 CONVERSATIONS = [
-    start
+    start,
+    notifications
 ]
 
 # Setup logger

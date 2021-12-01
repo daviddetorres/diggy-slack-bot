@@ -13,6 +13,10 @@ def _commands():
     ]
 
 
+def _notifications():
+    return {}
+
+
 def help(bot, ctxt, client, req, args):
     template_path = os.path.join(os.path.dirname(__file__), 'help.json')
     with open(template_path) as json_data_file:
