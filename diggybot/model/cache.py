@@ -39,8 +39,8 @@ class Cache:
         projects = Project.list_ids(self.db)
         invests = Invest.list_ids(self.db)
 
-        self.index_projects(projects)
-        self.index_invests(projects)
+        self.update_projects(projects)
+        self.update_invests(projects)
 
         threading.Timer(CACHE_UPDATE_SECONDS, self.refresh_cache).start()
 
@@ -66,11 +66,13 @@ class Cache:
 
 
     def notify_project_funded(self, project):
+        self.m.log.info("Notifying funded project {}".format(project.id))
         for callback in self.project_funded_callbacks:
             callback(project)
 
 
     def notify_new_project(self, project):
+        self.m.log.info("Notifying new project {}".format(project.id))
         for callback in self.new_project_callbacks:
             callback(project)
 
@@ -120,24 +122,38 @@ class Cache:
 
         for new in new_projects:
             id = new['id']
+            self.m.log.info("Evaluating project {}".format(id))
 
             if id in self.projects_by_id:
                 old = self.projects_by_id[id]
 
-                # Funded projects
+                # New projects - TODO: Do not duplicate
                 if old['status'] != new['status'] and new['status'] == 3:
                     project = Project.find_by_id(self.db, id)
-                    projects_to_index.append(project)
+                    projects_to_index.append(new)
+                    self.notify_new_project(project)
+
+                # Funded projects - TODO: Do not duplicate
+                if old['status'] != new['status'] and new['status'] >= 4:
+                    project = Project.find_by_id(self.db, id)
+                    projects_to_index.append(new)
                     self.notify_project_funded(project)
 
-            # New projects
             else:
-                project = Project.find_by_id(self.db, id)
-                projects_to_index.append(project)
-                self.notify_new_project(project)
+                # New projects - TODO: Do not duplicate
+                if new['status'] == 3:
+                    project = Project.find_by_id(self.db, id)
+                    projects_to_index.append(new)
+                    self.notify_new_project(project)
+
+                # Funded projects - TODO: Do not duplicate
+                if new['status'] >= 4:
+                    project = Project.find_by_id(self.db, id)
+                    projects_to_index.append(new)
+                    self.notify_project_funded(project)
+
 
         self.index_projects(projects_to_index)
-
 
 
     def update_invests(self, new_invests):

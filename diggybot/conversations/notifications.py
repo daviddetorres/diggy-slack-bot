@@ -18,7 +18,7 @@ def _notifications():
         "project_funded": [project_funded]
     }
 
-def new_project(bot, client, req, project):
+def new_project(bot, project):
     template_path = os.path.join(os.path.dirname(__file__), 'new_project.json')
     with open(template_path) as json_data_file:
         template = json.load(json_data_file)
@@ -27,7 +27,7 @@ def new_project(bot, client, req, project):
         bot.sendSlackBlocks('#general', text, blocks, None)
 
 
-def new_investment(bot, client, req, invest, user, project):
+def new_investment(bot, invest, user, project):
     template_path = os.path.join(os.path.dirname(__file__), 'new_shovel.json')
     with open(template_path) as json_data_file:
         template = json.load(json_data_file)
@@ -36,7 +36,7 @@ def new_investment(bot, client, req, invest, user, project):
         bot.sendSlackBlocks('#general', text, blocks, None)
 
 
-def new_collaborator(bot, client, req, collaboration, user, project):
+def new_collaborator(bot, collaboration, user, project):
     template_path = os.path.join(os.path.dirname(__file__), 'new_contribution.json')
     with open(template_path) as json_data_file:
         template = json.load(json_data_file)
@@ -45,7 +45,7 @@ def new_collaborator(bot, client, req, collaboration, user, project):
         bot.sendSlackBlocks('#general', text, blocks, None)
 
 
-def project_funded(bot, client, req, project):
+def project_funded(bot, project):
     template_path = os.path.join(os.path.dirname(__file__), 'project_funded.json')
     with open(template_path) as json_data_file:
         template = json.load(json_data_file)

@@ -44,17 +44,43 @@ class Bot:
             handle = "/{}".format(command.__name__)
             self.commands[handle] = command
 
-        NOTIFICATION_REGISTRIES = {
-            "new_project": self.m.cache.on_new_project,
-            "new_investment": self.m.cache.on_new_invest,
-            "new_collaborator": self.m.cache.on_project_funded,
-            "project_funded": self.m.cache.on_new_collaborator
-        }
+        cache = self.m.cache
         notifications = conversation._notifications()
         for notification_type in notifications:
             callbacks = notifications[notification_type]
             for callback in callbacks:
-                NOTIFICATION_REGISTRIES[notification_type](callback)
+                if notification_type == "new_project":
+                    cache.on_new_project(self.create_new_project_callback(callback))
+                elif notification_type == "new_investment":
+                    cache.on_new_invest(self.create_new_invest_callback(callback))
+                elif notification_type == "new_collaborator":
+                    cache.on_new_collaborator(self.create_new_collaborator_callback(callback))
+                elif notification_type == "project_funded":
+                    cache.on_project_funded(self.create_project_funded_callback(callback))
+
+
+    def create_new_project_callback(self, callback):
+        def notification_callback(project):
+            callback(self, project)
+        return notification_callback
+
+
+    def create_new_invest_callback(self, callback):
+        def notification_callback(invest, user, project):
+            callback(self, invest, user, project)
+        return notification_callback
+
+
+    def create_new_collaborator_callback(self, callback):
+        def notification_callback(collaboration, user, project):
+            callback(self, collaboration, user, project)
+        return notification_callback
+
+
+    def create_project_funded_callback(self, callback):
+        def notification_callback(project):
+            callback(self, project)
+        return notification_callback
 
 
     def process(self):
