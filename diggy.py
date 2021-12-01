@@ -1,14 +1,36 @@
-import os
-from slack_sdk import WebClient
-from slack_sdk.errors import SlackApiError
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from diggybot.bot import Bot
+from diggybot.model import model
+import logging
 
-client = WebClient(token=os.environ['TOKEN'])
+VERSION = '0.0.1'
 
-try:
-    response = client.chat_postMessage(channel='#general', text="Hello world!")
-    assert response["message"]["text"] == "Hello world!"
-except SlackApiError as e:
-    # You will get a SlackApiError if "ok" is False
-    assert e.response["ok"] is False
-    assert e.response["error"]  # str like 'invalid_auth', 'channel_not_found'
-    print(f"Got an error: {e.response['error']}")
+CONVERSATIONS = [
+]
+
+# Setup logger
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
+def main():
+
+    logger.info('Starting diggy-slack-bot v{}'.format(VERSION))
+
+    logger.info('Loading model')
+    m = model.Model(logger)
+
+    logger.info('Loading bot')
+    bot = Bot(m)
+#    bot.load_conversations(CONVERSATIONS)
+    bot.start()
+
+    logger.info('Bot started')
+
+    bot.sendSlackMessage('#general', 'Soy espalda. Digo, I mean, I\'m back.', None)
+
+
+if __name__ == '__main__':
+    main()

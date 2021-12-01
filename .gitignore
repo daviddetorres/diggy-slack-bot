@@ -1,1 +1,11 @@
 **tmp**
+
+# Python
+*.pyc
+__pycache__
+
+# Vim open files
+*.swp
+
+# PyEnv
+.python-version
