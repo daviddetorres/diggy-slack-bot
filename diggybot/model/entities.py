@@ -52,13 +52,13 @@ class Project:
         result_object = []
 
         params = { 'id': id }
-        statement = text("""SELECT * FROM project where id == :id""")
-        statement = statement.bindparams(bindparam('id', expanding=True))
+        statement = text("""SELECT * FROM project where id = :id""")
+        statement = statement.bindparams(bindparam('id'))
 
         with db.connect() as con:
             result = con.execute(statement, params)
 
-            result_object = Project(row)
+            result_object = Project(result.fetchone())
 
         return result_object
 
@@ -110,13 +110,13 @@ class Invest:
         result_object = []
 
         params = { 'id': id }
-        statement = text("""SELECT * FROM invest where id == :id""")
-        statement = statement.bindparams(bindparam('id', expanding=True))
+        statement = text("""SELECT * FROM invest where id = :id""")
+        statement = statement.bindparams(bindparam('id'))
 
         with db.connect() as con:
             result = con.execute(statement, params)
 
-            result_object = Invest(row)
+            result_object = Invest(result.fetchone())
 
         return result_object
 
