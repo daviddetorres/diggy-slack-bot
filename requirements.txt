@@ -1,1 +1,3 @@
-slack_sdk
+slack_sdk == 3.12.0
+SQLAlchemy == 1.3
+PyMySQL == 0.9.3

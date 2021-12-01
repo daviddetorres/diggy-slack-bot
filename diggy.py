@@ -4,6 +4,8 @@ from diggybot.bot import Bot
 from diggybot.model import model
 import logging
 
+from diggybot.model.entities import Project
+
 VERSION = '0.0.1'
 
 CONVERSATIONS = [
@@ -13,6 +15,12 @@ CONVERSATIONS = [
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+def log_projects(result):
+    for row in result:
+        project = Project(row)
+        logger.info(project.log_string())
 
 
 def main():
@@ -29,7 +37,8 @@ def main():
 
     logger.info('Bot started')
 
-    bot.sendSlackMessage('#general', 'Soy espalda. Digo, I mean, I\'m back.', None)
+#    bot.sendSlackMessage('#general', 'Soy espalda. Digo, I mean, I\'m back.', None)
+    Project.list_by_id(m.db(), log_projects)
 
 
 if __name__ == '__main__':
