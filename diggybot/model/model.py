@@ -25,6 +25,7 @@ class EnvOptions:
 
 
     def __init__(self):
+        self.app_token = os.environ['APP_TOKEN']
         self.token = os.environ['TOKEN']
         self.db_host = os.environ['DB_HOST']
         self.db_port = os.environ['DB_PORT']
