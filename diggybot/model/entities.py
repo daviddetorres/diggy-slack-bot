@@ -12,7 +12,12 @@ class Project:
         'subtitle',
         'description',
         'owner',
-        'status'
+        'status',
+        'mincost',
+        'maxcost',
+        'amount',
+        'num_investors',
+        'image'
     ]
 
     def __init__(self, dict):
@@ -26,7 +31,7 @@ class Project:
     @staticmethod
     def list_ids(db):
         with db.connect() as con:
-            statement = """SELECT id, status FROM project"""
+            statement = """SELECT id, status FROM project WHERE status = 3"""
             return con.execute(statement)
 
 
