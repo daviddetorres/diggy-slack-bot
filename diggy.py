@@ -17,6 +17,13 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 
+def cache_projects(result):
+    projects = []
+    for row in result:
+        logger.info(row[0])
+        projects.append(row[0])
+    Project.list_by_id(model.Model(logger).db(), projects, log_projects)
+
 def log_projects(result):
     for row in result:
         project = Project(row)
@@ -38,7 +45,7 @@ def main():
     logger.info('Bot started')
 
 #    bot.sendSlackMessage('#general', 'Soy espalda. Digo, I mean, I\'m back.', None)
-    Project.list_by_id(m.db(), log_projects)
+    Project.list_ids(m.db(), cache_projects)
 
 
 if __name__ == '__main__':
