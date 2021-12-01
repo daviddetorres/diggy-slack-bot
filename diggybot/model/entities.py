@@ -42,7 +42,7 @@ class Project:
         with db.connect() as con:
             result = con.execute(statement, params)
 
-            for row in result_projects:
+            for row in result:
                 projects.append( Project(row) )
 
         return projects

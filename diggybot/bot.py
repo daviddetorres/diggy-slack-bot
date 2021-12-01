@@ -71,7 +71,6 @@ class Bot:
     def sendSlackMessage(self, channel, text, error_callback):
         try:
             response = self.client.chat_postMessage(channel=channel, text=text)
-            assert response["message"]["text"] == text
         except SlackApiError as e:
             # You will get a SlackApiError if "ok" is False
             assert e.response["ok"] is False
@@ -80,10 +79,9 @@ class Bot:
             print(f"Got an error: {e.response['error']}")
 
 
-    def sendSlackBlocks(self, channel, blocks, error_callback):
+    def sendSlackBlocks(self, channel, text, blocks, error_callback):
         try:
-            response = self.client.chat_postMessage(channel=channel, blocks=blocks)
-            assert response["message"]["blocks"] == blocks
+            response = self.client.chat_postMessage(channel=channel, text=text, blocks=blocks)
         except SlackApiError as e:
             # You will get a SlackApiError if "ok" is False
             assert e.response["ok"] is False
@@ -96,7 +94,6 @@ class Bot:
         try:
             text = project.log_string()
             response = self.client.chat_postMessage(channel=channel, text=text)
-            assert response["message"]["text"] == text
         except SlackApiError as e:
             # You will get a SlackApiError if "ok" is False
             assert e.response["ok"] is False
@@ -105,9 +102,9 @@ class Bot:
             print(f"Got an error: {e.response['error']}")
 
 
-    def sendProjectList(self, projects):
+    def sendProjectList(self, channel, projects):
         for project in projects:
-            bot.sendProject('#general', project, None)
+            self.sendProject(channel, project, None)
 
 
 # Start tracker

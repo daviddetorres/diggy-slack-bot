@@ -18,16 +18,17 @@ def help(bot, ctxt, client, req, args):
     with open(template_path) as json_data_file:
         template = json.load(json_data_file)
         blocks = template['blocks']
-        bot.sendSlackBlocks('#general', blocks, None)
+        text = template['blocks'][0]['text']['text']
+        bot.sendSlackBlocks('#general', text, blocks, None)
 
 
 def list_projects(bot, ctxt, client, req, args):
     project_ids = []
 
-    result_project_ids = Project.list_ids()
+    result_project_ids = Project.list_ids(bot.m.db())
     for row in result_project_ids:
         project_ids.append(row[0])
 
-    projects = Project.list_by_id(m.db(), projects)
+    projects = Project.list_by_id(bot.m.db(), project_ids)
 
     bot.sendProjectList('#general', projects)
