@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#from .cache import Cache
+from .cache import Cache
+from .entities import *
 import os
 from sqlalchemy import create_engine
 
@@ -12,15 +13,18 @@ class Model:
         self.log = logger
 
         # Environment variables
+        self.log.info('Loading config')
         self.env = EnvOptions()
 
         # Database
+        self.log.info('Loading db')
         self.db_engine = create_engine(self.env.db_url())
 
         # Cache
-#        projects = Project.list_ids(self.db())
-#        invests = Invest.list_ids(self.db())
-#        self.cache = Cache(self.db(), project, invests)
+        self.log.info('Loading cache')
+        projects = Project.list_ids(self.db())
+        invests = Invest.list_ids(self.db())
+        self.cache = Cache(self, projects, invests)
 
     def db(self):
         return self.db_engine

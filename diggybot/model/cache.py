@@ -1,12 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from entities import *
+from .entities import *
+import time, threading
+
+CACHE_UPDATE_SECONDS = 10
 
 class Cache:
 
-    def __init__(self, db, projects, invests):
+    def __init__(self, model, projects, invests):
         # Initial data
-        self.db = db
+        self.m = model
+        self.db = model.db()
         self.projects = []
         self.invests = []
 
@@ -21,10 +25,24 @@ class Cache:
         self.new_invest_callbacks = []
         self.new_collaborator_callbacks = []
 
+        # Update cache
+        threading.Timer(CACHE_UPDATE_SECONDS, self.refresh_cache).start()
 
     def init_cache(self):
         self.projects_by_id = {}
-        self.projects_by_state = {}
+        self.projects_by_status = {}
+        self.invests_by_id = {}
+
+
+    def refresh_cache(self):
+        self.m.log.info("Refreshing cache")
+        projects = Project.list_ids(self.db)
+        invests = Invest.list_ids(self.db)
+
+        self.index_projects(projects)
+        self.index_invests(projects)
+
+        threading.Timer(CACHE_UPDATE_SECONDS, self.refresh_cache).start()
 
 
     def on_project_funded(self, callback):
@@ -73,24 +91,29 @@ class Cache:
             # Projects by id
             self.projects_by_id[project['id']] = project
 
-            # Projects by state
-            if project['state'] not in self.projects_by_state
-                self.projects_by_state[project['state']] = []
-            self.projects_by_state[project['state']].append(project)
+            # Projects by status
+            status = project['status']
+            if status not in self.projects_by_status:
+                self.projects_by_status[status] = []
+            if project in self.projects_by_status[status]:
+                self.projects_by_status[status].remote(project)
+            self.projects_by_status[status].append(project)
 
 
     def index_invests(self, invests):
         for invest in invests:
-            if project in self.projects:
+            if invest in self.invests:
                 continue
 
-            self.projects.append(project)
+            self.invests.append(invest)
 
             # invests by id
             self.invests_by_id[invest['id']] = invest
 
 
     def update_projects(self, new_projects):
+        projects_to_index = []
+
         for new in new_projects:
             id = new['id']
 
@@ -98,17 +121,33 @@ class Cache:
                 old = self.projects_by_id[id]
 
                 # Funded projects
-                if old['state'] != new['state'] and new['state'] = 3
-                project = Project.find_by_id(self.db, id)
-                self.notify_project_funded(project)
+                if old['status'] != new['status'] and new['status'] == 3:
+                    project = Project.find_by_id(self.db, id)
+                    projects_to_index.append(project)
+                    self.notify_project_funded(project)
 
             # New projects
             else:
                 project = Project.find_by_id(self.db, id)
+                projects_to_index.append(project)
                 self.notify_new_project(project)
 
-            self.projects_by_id.append(new)
+        self.index_projects(projects_to_index)
 
 
 
     def update_invests(self, new_invests):
+        invests_to_index = []
+
+        for new in new_invests:
+            id = new['id']
+
+            # New invests
+            if id not in self.invests_by_id:
+                invest = Invest.find_by_id(self.db, id)
+                invests_to_index.append(invest)
+                user = None # TODO
+                project = None # TODO
+                self.notify_new_invest(invest, user, project)
+
+        self.index_invests(invests_to_index)

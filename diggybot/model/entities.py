@@ -104,3 +104,19 @@ class Invest:
 
         return result_list
 
+
+    @staticmethod
+    def find_by_id(db, id):
+        result_object = []
+
+        params = { 'id': id }
+        statement = text("""SELECT * FROM invest where id == :id""")
+        statement = statement.bindparams(bindparam('id', expanding=True))
+
+        with db.connect() as con:
+            result = con.execute(statement, params)
+
+            result_object = Invest(row)
+
+        return result_object
+
