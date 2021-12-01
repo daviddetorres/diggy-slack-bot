@@ -144,12 +144,6 @@ class Bot:
         for project in projects:
             self.sendProject(channel, project, None)
 
-
-# Start tracker
-# register events
-# code messages for events
-
 # Conversations
-# help command
 # create project
 # list projects commands
