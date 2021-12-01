@@ -4,6 +4,8 @@ from .cache import Cache
 from .entities import *
 import os
 from sqlalchemy import create_engine
+from jinja2 import Environment, PackageLoader, select_autoescape
+
 
 class Model:
 
@@ -25,6 +27,15 @@ class Model:
         projects = Project.list_ids(self.db())
         invests = Invest.list_ids(self.db())
         self.cache = Cache(self, projects, invests)
+
+        # Template engine
+        self.log.info('Loading template renderer')
+        self.template_engine = Environment(
+            loader=PackageLoader('diggybot', 'conversations/templates'),
+            autoescape=select_autoescape()
+        )
+
+
 
     def db(self):
         return self.db_engine

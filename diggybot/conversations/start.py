@@ -35,4 +35,8 @@ def list_projects(bot, ctxt, client, req, args):
 
     projects = Project.list_by_id(bot.m.db(), project_ids)
 
-    bot.sendProjectList('#general', projects)
+    template = bot.m.get_template('list_projects.json')
+    blocks = template.render(projects=projects)
+    bot.sendSlackBlocks('#general', '', blocks, None)
+
+    #bot.sendProjectList('#general', projects)

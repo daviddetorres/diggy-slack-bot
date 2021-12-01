@@ -1,0 +1,29 @@
+{
+	"blocks": [
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "So, you are here looking for adventure... .\n\n *Here are the open Quests:*"
+			}
+		},
+		{
+			"type": "divider"
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*Quest 1"
+			},
+			"accessory": {
+				"type": "image",
+				"image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/c7ed05m9lC2EmA3Aruue7A/o.jpg",
+				"alt_text": "alt text for image"
+			}
+		},
+		{
+			"type": "divider"
+		}
+	]
+}

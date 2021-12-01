@@ -7,5 +7,12 @@ pip install -r requirements.txt
 
 Usage: 
 ```
-TOKEN=XXX python3 diggy.py
+APP_TOKEN= \
+TOKEN= \
+DB_HOST= \
+DB_PORT= \
+DB_USER= \
+DB_PASS= \
+DB_DATABASE= \
+python3 diggy.py
 ```
