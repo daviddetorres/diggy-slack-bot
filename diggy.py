@@ -18,16 +18,28 @@ logger = logging.getLogger(__name__)
 
 
 def cache_projects(result):
+    m = model.Model(logger) # Send one as parameter
     projects = []
     for row in result:
         logger.info(row[0])
         projects.append(row[0])
-    Project.list_by_id(model.Model(logger).db(), projects, log_projects)
+    Project.list_by_id(m.db(), projects, log_projects)
+
 
 def log_projects(result):
+    projects = []
     for row in result:
         project = Project(row)
-        logger.info(project.log_string())
+        projects.append(project)
+    send_slack_message(projects)
+
+
+def send_slack_message(projects):
+    bot = Bot(model.Model(logger))  # Send one as parameter
+    bot.start()
+    #
+    for project in projects:
+        bot.sendSlackMessage('#general', project.log_string(), None)
 
 
 def main():
@@ -44,8 +56,7 @@ def main():
 
     logger.info('Bot started')
 
-#    bot.sendSlackMessage('#general', 'Soy espalda. Digo, I mean, I\'m back.', None)
-    Project.list_ids(m.db(), cache_projects)
+#    Project.list_ids(m.db(), cache_projects)
 
 
 if __name__ == '__main__':
