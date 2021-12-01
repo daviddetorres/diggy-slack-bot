@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+#from .cache import Cache
 import os
 from sqlalchemy import create_engine
 
@@ -16,6 +17,10 @@ class Model:
         # Database
         self.db_engine = create_engine(self.env.db_url())
 
+        # Cache
+#        projects = Project.list_ids(self.db())
+#        invests = Invest.list_ids(self.db())
+#        self.cache = Cache(self.db(), project, invests)
 
     def db(self):
         return self.db_engine
