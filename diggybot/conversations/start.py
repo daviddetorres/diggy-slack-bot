@@ -9,7 +9,8 @@ __name__ = 'Start'
 def _commands():
     return [
         help,
-        list_projects
+        list_projects,
+        list_needs
     ]
 
 
@@ -37,6 +38,21 @@ def list_projects(bot, ctxt, client, req, args):
 
     template = bot.m.template_engine.get_template('project_list.json')
     blocks = template.render(projects=projects,host=bot.m.env.db_host)
+    # log the blocks
+    # bot.m.log.info(blocks)
+    bot.sendSlackBlocks('#general', 'text', blocks, None)
+
+def list_needs(bot, ctxt, client, req, args):
+    project_ids = []
+
+    result_project_ids = Need.list_ids(bot.m.db())
+    for row in result_project_ids:
+        project_ids.append(row[0])
+
+    projects = Project.list_by_id(bot.m.db(), project_ids)
+    needs = Need.list_by_id(bot.m.db(), project_ids)
+    template = bot.m.template_engine.get_template('needs_list.json')
+    blocks = template.render(projects=projects,needs=needs,host=bot.m.env.db_host)
     # log the blocks
     # bot.m.log.info(blocks)
     bot.sendSlackBlocks('#general', 'text', blocks, None)

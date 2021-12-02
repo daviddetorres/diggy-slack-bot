@@ -3,7 +3,7 @@
     "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": "So, you are here looking for adventure... .\n\n *Here are the open Quests:*"
+      "text": "So, you are here looking for adventure... .\n\n *Here are the projects that need your help:*"
     }
   }
   {% for project in projects %}
@@ -13,19 +13,31 @@
     "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": "*{{ project['name'] }}:* {{ project['subtitle'] | replace('\n', '\\n') | replace('\\\"', '') }}\n\n⛏️ Shovels earned: {{ project['amount'] }} out of {{ project['mincost'] }} (Optimal: {{ project['maxcost'] }}).\n🙋🙋🏽{{ project['num_investors'] }} people donated to this project!!!\nID: {{ project['id'] }}"
+      "text": "*{{ project['name'] }}:* {{ project['subtitle'] | replace('\n', '\\n') | replace('\\\"', '') }}\n\n"
     },
     "accessory": {
       "type": "image",
       "image_url": "https://{{ host }}:8443/img/700x700/{{  project['image'] }}",
       "alt_text": "alt text for image"
     } 
-  },
+  }
+  {% for need in needs %}
+{% if need['project_id'] == project['id'] %}
+,{
+	"type": "section",
+	"text": {
+		"type": "mrkdwn",
+		"text": "👨🏽‍💻 *{{ need['need'] }}:* {{ need['need_description'] }}\n\n"
+	}
+}
+{% endif %}
+{% endfor %}
+  ,
   {
     "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": "Visit the project page!"
+      "text": "\nVisit the project page!"
     },
     "accessory": {
       "type": "button",
