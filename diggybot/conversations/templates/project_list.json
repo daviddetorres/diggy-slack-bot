@@ -13,7 +13,7 @@
     "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": "*{{ project['name'] }}:* {{ project['subtitle'] | replace('\n', '\\n') | replace('\\\"', '') }}\n\n⛏️ Shovels earned: {{ project['amount'] }} from {{ project['mincost'] }} (Optimal: {{ project['maxcost'] }}).\n🙋🙋🏽{{ project['num_investors'] }} people donated to this project!!!\nID: {{ project['id'] }}"
+      "text": "*{{ project['name'] }}:* {{ project['subtitle'] | replace('\n', '\\n') | replace('\\\"', '') }}\n\n⛏️ Shovels earned: {{ project['amount'] }} out of {{ project['mincost'] }} (Optimal: {{ project['maxcost'] }}).\n🙋🙋🏽{{ project['num_investors'] }} people donated to this project!!!\nID: {{ project['id'] }}"
     },
     "accessory": {
       "type": "image",
