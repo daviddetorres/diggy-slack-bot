@@ -37,7 +37,8 @@ def list_projects(bot, ctxt, client, req, args):
     projects = Project.list_by_id(bot.m.db(), project_ids)
 
     template = bot.m.template_engine.get_template('project_list.json')
-    blocks = template.render(projects=projects,host=bot.m.env.db_host)
+    # TODO: Do not send a callback to the template. It's hackish as hell.
+    blocks = template.render(projects=projects, host=bot.m.env.db_host, progressbar=create_progressbar)
     # log the blocks
     # bot.m.log.info(blocks)
     bot.sendSlackBlocks('#general', 'text', blocks, None)
@@ -52,7 +53,19 @@ def list_needs(bot, ctxt, client, req, args):
     projects = Project.list_by_id(bot.m.db(), project_ids)
     needs = Need.list_by_id(bot.m.db(), project_ids)
     template = bot.m.template_engine.get_template('needs_list.json')
-    blocks = template.render(projects=projects,needs=needs,host=bot.m.env.db_host)
+    blocks = template.render(projects=projects, needs=needs, host=bot.m.env.db_host)
     # log the blocks
     # bot.m.log.info(blocks)
     bot.sendSlackBlocks('#general', 'text', blocks, None)
+
+def create_progressbar(percentage):
+    width = 10
+    progressbar = ""
+    for i in range(width):
+        current = (0.0 + i) / width
+        if percentage > current:
+            progressbar += "🌀"
+        else:
+            progressbar += "⚫️"
+
+    return progressbar

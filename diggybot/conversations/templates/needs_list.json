@@ -19,7 +19,7 @@
       "type": "image",
       "image_url": "https://{{ host }}:8443/img/700x700/{{  project['image'] }}",
       "alt_text": "alt text for image"
-    } 
+    }
   }
   {% for need in needs %}
 {% if need['project_id'] == project['id'] %}

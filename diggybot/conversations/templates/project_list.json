@@ -13,13 +13,13 @@
     "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": "*{{ project['name'] }}:* {{ project['subtitle'] | replace('\n', '\\n') | replace('\\\"', '') }}\n\n⛏️ Shovels earned: {{ project['amount'] }} out of {{ project['mincost'] }} (Optimal: {{ project['maxcost'] }}).\n🙋🙋🏽{{ project['num_investors'] }} people donated to this project!!!\nID: {{ project['id'] }}"
+      "text": "*{{ project['name'] }}:* {{ project['subtitle'] | replace('\n', '\\n') | replace('\\\"', '') }}\n\n⛏️ Shovels earned: {{ project['amount'] }} out of {{ project['mincost'] }} (Optimal: {{ project['maxcost'] }}).\n🙋🙋🏽{{ project['num_investors'] }} people donated to this project!!!\nID: {{ project['id'] }}\n{{ progressbar(project['amount'] / project['mincost']) }}"
     },
     "accessory": {
       "type": "image",
       "image_url": "https://{{ host }}:8443/img/700x700/{{  project['image'] }}",
       "alt_text": "alt text for image"
-    } 
+    }
   },
   {
     "type": "section",
